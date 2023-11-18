@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+#  myh2:
+#    container_name: myh2db
+#    image: h2database/h2
+#    environment:
+#      - H2_DATABASE_NAME=productDb
+#      - H2_DATABASE_USERNAME=admin
+#      - H2_DATABASE_PASSWORD=admin
+#    ports:
+#      - "5001:8082"
+#    networks:
+#      - springboot-h2-net
+
+  springboot-restful-webservices:
+    container_name: product-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+#    depends_on:
+#      - myh2
+    environment:
+      - spring.datasource.url=jdbc:h2:mem:productDb
+      - spring.datasource.username=admin
+      - spring.datasource.password=admin
+      - spring.datasource.driver-class-name=org.h2.Driver
+      - spring.jpa.hibernate.ddl-auto=update
+    networks:
+      - springboot-h2-net
+    restart: on-failure
+
+networks:
+  springboot-h2-net:
